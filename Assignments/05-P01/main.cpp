@@ -37,8 +37,8 @@ private:
   int top;          // top of stack 
 
 public:
-double size;         // current max stack size
-int resize_count = 0; 
+double size;         // current max stack size (moved to public to allow access)
+int resize_count = 0; // tracks how many times the stack has resized
  /**
   * ArrayStack
   * 
@@ -282,50 +282,56 @@ if(!Empty()){
 // MAIN DRIVER
 // Simple Array Based Stack Usage:
 int main() {
-  ofstream outfile;
+  // Input and output files
+  ofstream outfile;               
   ifstream infile;
   infile.open("nums_test.dat");
   outfile.open("Output.txt");
-
+  // Output file header
   outfile << "######################################################################\n";
   outfile << "Program 1 - Resizing the Stack\n";
   outfile << "CMPS 3013\n";
   outfile << "Kyler Wyatt\n";
 
+  // Initializes the stack
   ArrayStack stack;
 
+  // Variables to track the input, max stack size and ending size of the stack
   int input;
   int max = stack.size;
   int end_size;
 
+  // Loop to read all of the file
   while(!infile.eof())
   {
-      infile >> input;
+      infile >> input;   // value to be pushed or popped
 
-      if (input%2==0)
+      if (input%2==0)     // pushes evens on to the stack
       {
         stack.Push(input);
-        if (max < stack.size)
+        if (max < stack.size)   // track max stack size
         {
           max = stack.size;
         }
       }
-      else
+      else    // pops of the stack for odd values
       {
         stack.Pop();
       }
-      end_size = stack.size;
+      end_size = stack.size;   // final size of the stack
   }
   int count = stack.resize_count;     //Tracks number of time stack resizes
 
-  outfile <<"Max Stack Size: "
-          << max
-          <<"\nEnd Stack Size: "
-          << end_size
-          <<"\nStack Resized: "
-          <<count
-          <<" times\n"
-          << "######################################################################";
+  outfile <<"Max Stack Size: ";      // formatting for output
+  outfile << max;
+  outfile <<"\nEnd Stack Size: ";
+  outfile << end_size;
+  outfile <<"\nStack Resized: ";
+  outfile <<count;
+  outfile <<" times\n";
+  outfile << "######################################################################";
+
+infile.close();
 outfile.close();
 
 return 0;
